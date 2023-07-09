@@ -25,6 +25,16 @@ type MessageBody = {
   timestamp?: string
 }
 
+export enum EmailEvent {
+  EMAIL_ADDED = 'EMAIL_ADDED',
+  EMAIL_UPDATED = 'EMAIL_UPDATED'
+}
+
+export type MessagePayload = {
+  emailEventType: EmailEvent
+  payload: object
+}
+
 export default function Home() {
   const [emailList, setEmailList] = useState<EmailNotificationType[]>([])
   const BASE_URI = 'http://localhost:4000'
@@ -41,11 +51,12 @@ export default function Home() {
     })
 
     socket.on('message', (message) => {
-      console.log('Received message:', message)
-      if (message === 'Hello from hook controller') {
-        fetchData()
+      const receivedMessage: MessagePayload = JSON.parse(message)
+      switch (receivedMessage.emailEventType) {
+        case 'EMAIL_ADDED':
+        case 'EMAIL_UPDATED':
+          fetchData()
       }
-      // fetch all / find by id and update specific id, tbd
     })
 
     // clean up unclosed connection just in case
