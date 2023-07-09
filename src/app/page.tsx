@@ -81,7 +81,6 @@ export default function Home() {
         }
         return emailNotification
       })
-      // console.log(mappedResponse)
       setEmailList(mappedResponse)
     } catch (error) {
       setEmailList([])
@@ -126,7 +125,13 @@ export default function Home() {
                 <tr key={message.id}>
                   <td className="border px-4 py-2">{message.id}</td>
                   <td className="border px-4 py-2">{message.recipient}</td>
-                  <td className="border px-4 py-2">{message.status}</td>
+                  <td
+                    className={`border px-4 py-2 status ${
+                      message.status === 'delivered' ? 'message-success' : 'message-pending'
+                    }`}
+                  >
+                    {message.status}
+                  </td>
                   <td className="border px-4 py-2">{message.timestamp}</td>
                 </tr>
               ))}

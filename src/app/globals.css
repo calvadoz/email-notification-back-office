@@ -26,6 +26,18 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.status {
+  text-transform: uppercase;
+}
+
+.message-success {
+  color: #1cd7d7;
+}
+
+.message-pending {
+  color: #ffd700;
+}
+
 .loading-overlay {
   position: fixed;
   top: 0;
