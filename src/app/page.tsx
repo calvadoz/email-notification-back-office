@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { parseISO } from 'date-fns/fp'
+import io from 'socket.io-client'
 
 type EmailNotificationType = {
   id: string
@@ -27,6 +28,29 @@ type MessageBody = {
 export default function Home() {
   const [emailList, setEmailList] = useState<EmailNotificationType[]>([])
   const BASE_URI = 'http://localhost:4000'
+
+  useEffect(() => {
+    const socket = io(BASE_URI)
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server')
+    })
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from WebSocket server')
+    })
+
+    socket.on('message', (message) => {
+      console.log('Received message:', message)
+      // fetch all / find by id and update specific id, tbd
+    })
+
+    // clean up unclosed connection just in case
+    return () => {
+      socket.disconnect() 
+    }
+  }, [])
+
   useEffect(() => {
     fetchData()
   }, [])
