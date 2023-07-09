@@ -42,14 +42,17 @@ export default function Home() {
 
     socket.on('message', (message) => {
       console.log('Received message:', message)
+      if (message === 'Hello from hook controller') {
+        fetchData()
+      }
       // fetch all / find by id and update specific id, tbd
     })
 
     // clean up unclosed connection just in case
     return () => {
-      socket.disconnect() 
+      socket.disconnect()
     }
-  }, [])
+  }, [emailList])
 
   useEffect(() => {
     fetchData()
